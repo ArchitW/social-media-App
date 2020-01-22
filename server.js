@@ -4,8 +4,7 @@ const app = express();
 const methodOverride = require('method-override')
 const flash = require("express-flash");
 const session = require("express-session");
-const User = require('./model/User')
-
+const bodyParser = require('body-parser')
 
 
 
@@ -25,13 +24,22 @@ app.use(
         saveUninitialized: false
     })
 );
+app.use(bodyParser())
 
 
 
 //get home page
 
 app.get('/', (req, res) => {
-    res.render('index.ejs', { name: 'kyle' })
+    User.find({ name: 'alan50' }, (err, docs) => {
+        if (err) res.json(err);
+        else res.render('index.ejs', {
+            user: docs
+        })
+
+    })
+
+
 })
 //get login page
 app.get('/login', (req, res) => {
@@ -61,6 +69,8 @@ dotenv.config()
 mongoose.connect(process.env.DB_CONNECT,
     { useUnifiedTopology: true }, () => console.log('Connected to DB!'))
 
+var User = require('./model/User');
+
 //Middleware
 app.use(express.json());
 
@@ -82,6 +92,13 @@ app.use('/api/user', authRoute)
 app.use('/api/post', postRoute)
 
 
+
+// // console.log(User.find())
+// User.findOne().exec(function (err, docs) {
+//     console.log(docs.name)
+//     userId = docs.name
+//     console.log(userId)
+// });
 
 
 
