@@ -1,4 +1,7 @@
-<h1>Hi <%=name %></h1>
+<h1>Hi <%=user.name %></h1>
+<p>your email address is <%=user.email %></p>
+<p>your ID is <%=user._id %></p>
+<p>your ID is <%=user %></p>
 <form action="/api/user/logout?_method=DELETE" method="POST">
   <button type="submit">Log Out</button>
 </form>
